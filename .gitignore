@@ -1,0 +1,12 @@
+*.pyc
+*.py~
+buddy/keys.py
+analytics/migrations
+activities/migrations
+accounts/migrations
+
+db.sqlite3
+static/app/bower_components
+static/app/components
+static/node_modules
+*.komodoproject
