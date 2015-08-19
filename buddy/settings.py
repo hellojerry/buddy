@@ -34,8 +34,8 @@ from .keys import EMAIL_HOST_PASSWORD as pw_, EMAIL_HOST_USER as user_
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = pw_
-EMAIL_HOST_PASSWORD = user_
+EMAIL_HOST_USER = user_
+EMAIL_HOST_PASSWORD = pw_
 
 # Application definition
 
@@ -47,8 +47,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djcelery',
     'accounts',
-    'activities'
+    'activities',
+    'comms',
+    'analytics'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,8 +70,8 @@ ROOT_URLCONF = 'buddy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': [TEMPLATE_PATH],
+        'DIRS': [TEMPLATE_PATH],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -176,15 +179,15 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-CELERYBEAT_SCHEDULE = {
-    ##execute this every 30 minutes
-    'send-texts':{
-       'task': 'comms.tasks.text_list',
-       'schedule': crontab(minute='*/5'),
-       },
-        ###execute this at 9:15 daily
-    #'tweet-list': {
-    #    'task': 'comms.tasks.tweet_list',
-    #    'schedule': crontab(minute=15, hour=9)
-    #    },
-    }
+# CELERYBEAT_SCHEDULE = {
+#     ##execute this every 30 minutes
+#     'send-texts':{
+#        'task': 'comms.tasks.text_list',
+#        'schedule': crontab(minute='*/5'),
+#        },
+#         ###execute this at 9:15 daily
+#     #'tweet-list': {
+#     #    'task': 'comms.tasks.tweet_list',
+#     #    'schedule': crontab(minute=15, hour=9)
+#     #    },
+#     }

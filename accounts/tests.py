@@ -5,6 +5,9 @@ from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 import datetime
 from activities.models import Activity
+from .models import TempData
+from pprint import pprint
+from unittest import skip
 
 User = get_user_model()
 
@@ -175,5 +178,73 @@ class LoginTest(APITestCase):
         
 
 class TempDataModelTest(TestCase):
-    pass
+    
+    def test_save_functionality(self):
+        user = User.objects.create(email='a@b.com')
+        #b = TempData.objects.create(user=a)
+        with self.assertRaises(ValueError):
+            TempData.objects.create(user=user)
+
+    #turn off skipping when celery is up.
+
+    @skip
+    def test_save_func_with_celery(self):
+        user = User.objects.create(email='a@b.com')
+        b = TempData.objects.create(user=user, phone='4259237012')
+        self.assertEqual(TempData.objects.all().first().phone, '4259237012')
         
+
+class TempDataCreateViewTest(APITestCase):
+    
+    def test_empty_post_throws_error(self):
+        user = User.objects.create(email='a@b.com')
+        self.client.force_authenticate(user=user)
+        response = self.client.post('/api/users/'+ str(user.id) + '/createtemp/',
+                                    data = {})
+        #print(response.data)
+        self.assertIn('At least one field required.', response.data['message'])
+        self.assertIn('Bad Request', response.data['status'])
+    
+    #turn off skipping when celery is up.
+    
+    @skip
+    def test_post_creates_conf(self):
+        user = User.objects.create(email='a@b.com')
+        self.client.force_authenticate(user=user)
+        response = self.client.post('/api/users/' + str(user.id) + '/createtemp/',
+                                    data = {
+                                        'phone': '4259237012'
+                                    })
+        self.assertEqual(len(TempData.objects.all().first().phone_conf), 10)
+    
+class TempDataConfirmTest(TestCase):
+    
+    def test_raises_404_for_no_conf(self):
+        response = self.client.get('/confirm/abcdefg/p/')
+        self.assertEqual(response.status_code, 404)
+        
+    def test_updates_phone_with_conf(self):
+        user = User.objects.create(email='a@b.com')
+        temp = TempData.objects.create(user=user, phone='2234567890')
+        response = self.client.get('/confirm/' + str(temp.phone_conf) + '/p/')
+        self.assertEqual(User.objects.all().first().phone, '2234567890')
+        
+    def test_updates_email_with_conf(self):
+        user = User.objects.create(email='a@b.com')
+        temp = TempData.objects.create(user=user, email='b@c.com')
+        response = self.client.get('/confirm/' + str(temp.email_conf) + '/e/')
+        self.assertEqual(User.objects.all().first().email, 'b@c.com')
+        
+        
+    def test_updates_twitter_with_conf(self):
+        user = User.objects.create(email='a@b.com')
+        temp = TempData.objects.create(user=user, twitter_handle='b')
+        response = self.client.get('/confirm/' + str(temp.twitter_conf) + '/t/')
+        self.assertEqual(User.objects.all().first().twitter_handle, 'b')
+    
+    
+    def test_proper_template_used(self):
+        user = User.objects.create(email='a@b.com')
+        temp = TempData.objects.create(user=user, phone='2234567890')
+        response = self.client.get('/confirm/' + str(temp.phone_conf) + '/p/')
+        self.assertTemplateUsed(response, 'confirm.html')

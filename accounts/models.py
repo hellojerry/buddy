@@ -9,7 +9,10 @@ import pytz
 from datetime import timedelta, datetime, timezone
 
 from localflavor.us.models import PhoneNumberField
+import string, random
 
+def make_conf(length=10, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for x in range(length))
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
@@ -145,4 +148,35 @@ class User(AbstractBaseUser, PermissionsMixin):
         streak_points = 2*longest_streak if longest_streak > 10 else longest_streak
         return checkins_score + streak_points
     
+class TempData(models.Model):
+    phone = PhoneNumberField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    twitter_handle = models.CharField(max_length=20, blank=True, null=True)
+    kill_time = models.DateTimeField()
+    phone_conf = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    email_conf = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    twitter_conf = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    user = models.OneToOneField(User)
     
+    
+    def __str__(self):
+        return self.user.username
+    
+    def save(self, *args, **kwargs):
+        if self.phone:
+            self.phone_conf = make_conf()
+        if self.email:
+            self.email_conf = make_conf()
+        if self.twitter_handle:
+            self.twitter_conf = make_conf()
+        self.kill_time = datetime.utcnow() + timedelta(minutes=30)
+        if not self.twitter_handle and not self.phone and not self.email:
+            raise ValueError('at least one field required.')
+        super().save(*args, **kwargs)
+    
+from .tasks import delete_temp
+
+def temp_handler(sender, instance, *args, **kwargs):
+    delete_temp.apply_async(eta=instance.kill_time, kwargs={'obj_id': instance.id})
+
+post_save.connect(temp_handler, sender=TempData)
