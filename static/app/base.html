@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+    {% load staticfiles %}
+    
+    
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Accountabillibuddy!</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+<base href='/' />
+
+<!-- vendors -->
+
+<link rel='stylesheet' type='text/css' href='{% static "app/bower_components/bootstrap/dist/css/bootstrap-theme.min.css" %}'/>
+<link rel='stylesheet' type='text/css' href='{% static "app/bower_components/bootstrap/dist/css/bootstrap.min.css" %}'/>
+<link rel='stylesheet' type='text/css' href="{% static 'app/bower_components/angular-xeditable/dist/css/xeditable.css'%}">
+<link rel='stylesheet' type='text/css' href="{% static 'app/bower_components/cal-heatmap/cal-heatmap.css' %}">
+
+<!-- custom -->
+<link rel='stylesheet' type='text/css' href='{% static "app/app.css" %}'/>
+
+<!-- vendors -->
+
+<script src="{% static 'app/bower_components/d3/d3.min.js' %}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'></script>
+<script src="{% static 'app/bower_components/angular/angular.min.js' %}"></script>
+<script src="{% static 'app/bower_components/angular-route/angular-route.min.js' %}"></script>
+<script src="{% static 'app/bower_components/angular-animate/angular-animate.min.js' %}"></script>
+<script src="{% static 'app/bower_components/angular-resource/angular-resource.min.js' %}"></script>
+<script src="{% static 'app/bower_components/angular-xeditable/dist/js/xeditable.min.js' %}"></script>
+<script type='text/javascript' src="{% static 'app/bower_components/cal-heatmap/cal-heatmap.min.js' %}"></script>
+<script src="{% static 'app/bower_components/angular-bootstrap/ui-bootstrap.min.js' %}"></script>
+<script src="{% static 'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' %}"></script>
+
+<!-- custom -->
+<script src="{% static 'app/js/app.js' %}"></script>
+<script src="{% static 'app/js/app.config.js' %}"></script>
+<script src="{% static 'app/js/app.routes.js' %}"></script>
+
+<script src="{% static 'app/js/static/static.module.js' %}"></script>
+<script src="{% static 'app/js/static/controllers/static.controllers.js' %}"></script>
+
+
+
+
+
+</head>
+<body ng-app='buddy'>
+  
+<div class="box">
+  <div class="row header">
+    <p><b>header</b>
+      <br />
+      <br />(sized to content) </p>
+  </div>
+  
+  <div ng-view class="row content slide {[{ pageClass }]}" id="" >
+
+  </div>
+  <div class="row footer">
+    <p><b>footer</b> (fixed height)
+    
+    <a href='/' class='btn btn-success'>home</a>
+    <a href='/profile' class='btn btn-success'>Profile</a>
+    <a href='/settings' class='btn btn-success'>Settings</a>
+    <a href='/about' class='btn btn-success'>About</a>
+    </p>
+  </div>
+</div>
+</body>
+
+</html>

@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+def call_response(request):
+    return HttpResponse(open('comms/calls.xml').read(), content_type='text/xml')

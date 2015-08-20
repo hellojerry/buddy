@@ -33,7 +33,6 @@ def call_list():
             activity.save()
         else:
             activity.is_open = False
-            print 
             call_user(activity.user.phone)
             activity.save()
             

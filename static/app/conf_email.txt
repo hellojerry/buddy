@@ -1,0 +1,27 @@
+Hi!
+
+This email is to inform you that we've recently received
+
+a request update your account's email. If this email is in error,
+
+please ignore this message.
+
+
+In order to confirm this new email account, please click on the following link:
+
+<a href="http://localhost:8000/confirm/{{ email_conf }}/e/">Confirm new email</a>
+
+
+
+If you do not confirm this new email within 30 minutes, your account will retain its old email.
+
+
+Please note that if you also changed your phone number or twitter handle, you will need to verify
+
+them separately.
+
+Have a good one!
+
+Sincerely,
+
+Your Accountabillibuddy

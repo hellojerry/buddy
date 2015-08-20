@@ -45,6 +45,6 @@ def record_api_view(request, pk):
             l[b] += 1
         except:
             l[b] = 1
-    #print(l)
+
     return JsonResponse(l)
         
