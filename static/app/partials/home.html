@@ -1,15 +1,203 @@
 
+<div id='home' class='pages homepage'>
+<div class='container' id='ctr'>
+<div class="jumbotron" auth-hide>
+<div class='container'>
+<div class='row'>
 
-<div id='test' class='jumbotron' style='background-color: green'>
-  {{ pageClass }}
-  abcd
-</div>
-<div class='jumbotron'>
-  
-  abcd
+
+<div class='col-sm-7' ng-controller='HomeSizeController'>
+
+<h2 style='color: #0ac2d2 !important'>Welcome to</h2>
+
+<h2 style='color: #0ac2d2 !important'>Accountabillibuddy!</h2>
+<p>Accountabillibuddy is your robotic accountabillibuddy! Click "Tour" on the left to see what it does!</p>
+<button class='btn btn-success' auth-hide>ABCDEFG</button>
 </div>
 
-<div class='jumbotron'>
-  
-  abcd
+
+<div class='col-sm-5'>
+<tabset>
+<tab heading='Login'>
+<div class='panel-body' >
+	<form role='form' name='loginform'
+		  novalidate ng-submit='loginform.$valid && vm.login()' ng-controller='LoginController as vm'>
+		<div class='form-group'>
+			<label for='login_email'>Email</label>
+			<input type='email' class='form-control'
+				   id=login_email' ng-model='vm.login_email' placeholder='email...' required/>	
+		</div>
+		<div class='form-group'>
+			<label for='password'>Password</label>
+			<input type='password' class='form-control' name='password'
+				   id='login_password' ng-model='vm.login_password' required placeholder='password here'/>
+		</div>
+		<button class='btn btn-primary' >Log In</button>
+		<span ng-show='loginform.password.$dirty && loginform.password.$error.required'>
+				Hey! Put something in there!</span>
+		<span ng-show='vm.loginError'>The password provided does not match the email.</span>
+	</form>
 </div>
+</tab>
+
+<tab heading='Register'>
+<div class='panel-body'>
+    <form name="register_form"
+		novalidate ng-submit='register_form.$valid && vm.register()'
+		ng-controller='RegisterController as vm'>
+			<div class='form-group'>
+				<label for='register_email'>Email</label>
+				<input ng-model='vm.register_email' id='register_email'
+							 type='email' name='register_email'
+							 placeholder='email' class='form-control' required/>	
+			</div>
+			<div class='form-group'>
+				<label for='register_password'>Password</label>
+        <input ng-model="vm.register_password" id='register_password'
+							 type="password" name="password"
+							 placeholder="Password" required ng-minlength='7'
+							 class='form-control'>
+			</div>
+			<div class='form-group'>
+				<label for='confirm_password'>Confirm</label>
+				<input ng-model="vm.confirm_password"
+							 type="password" name="verify"
+							 placeholder="Confirm Password"
+							 required nx-equal-ex="vm.register_password"
+							 id='confirm_password'
+							 class='form-control'>
+			</div>
+			<button type='submit' class='btn btn-primary'>Register</button>
+			<span ng-show='register_form.verify.$error.nxEqualEx'>
+				Password is too short or doesn't match!</span>
+			</form>
+
+</div>
+</tab>
+
+</tabset>
+
+
+
+</div></div></div></div>
+<div class='container-fluid'>
+<div class='row'>
+	<div class='clearfix'>
+
+	<h2><span ng-controller='UsernameController'
+				auth-only class='pull-left inline'>Welcome, {{username}}! Here's your calendar.</span>
+	
+	
+</div>
+
+</div>
+</div>
+</br>
+<!-- make this section a directive -->
+<div class='jumbotron' auth-only ng-controller='ActivityTableController'>
+<div class='row'>
+<div class='container'>
+
+<!-- START $scope.[model] updates -->
+<div class="span12 well well-small"  >
+    <table class="table table-hover table-condensed">
+			<thead>
+				<tr>
+					
+					<th>Day</th>
+					<th>Date</th>
+					<th>Time</th>
+					
+					<th>Activity</th>
+					<th>Edit</th>
+				</tr>	
+			</thead>
+			<tbody>
+    <tr ng-repeat="activity in activities">
+			
+      <td width='18%'>
+        <!-- editable username (text with validation) -->
+        <span editable-select="activity.day"
+							e-name="day" e-form="rowform"
+							e-ng-options='i.text as i.text for i in days'
+							e-required onbeforesave='checkEmpty($data)'>
+          {{ activity.day }}
+        </span>
+      </td>
+      <td width='10%'>
+        <!-- editable status (select-local) -->
+        <span>
+          {{ activity.date }}
+        </span>
+      </td>
+      <td width='10%'>
+        <!-- editable group (select-remote) -->
+        <span editable-select="activity.time"
+							e-name="time" e-form="rowform"
+							e-ng-options="t.text as t.text for t in time_options"
+							e-required onbeforesave='checkEmpty($data)'>
+          {{ activity.time }}
+        </span>
+      </td>
+			
+			<td width='40%'>
+				<span editable-text='activity.name'
+							e-name='name' e-form='rowform'
+							e-required onbeforesave='checkEmpty($data)'>
+					
+					{{activity.name}}
+				</span>
+			<span e-name='id' e-form='rowform' ng-show='false'>
+				{{ activity.id || 'none'}}
+			</span>
+			</td>
+			
+      <td style="white-space: nowrap"  width='10%'>
+        <!-- form -->
+        <form editable-form name="rowform"
+							onaftersave="saveActivity($data, activity.local_id)"
+							ng-show="rowform.$visible"
+							class="form-buttons form-inline" shown="inserted == activity">
+          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+            save
+          </button>
+          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+            cancel
+          </button>
+        </form>
+        <div class="buttons" ng-show="!rowform.$visible && showEditable($index)">
+          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+          <button class="btn btn-danger" ng-click="removeActivity($index)">del</button>
+        </div>  
+      </td>
+    </tr>
+			</tbody>
+    </table>
+	
+</div>
+	<button class='btn btn-default pull-right' ng-click="addActivity()">Add activity</button>
+</div>
+</div>
+
+
+
+
+
+</div>
+<div class='col-sm-12' auth-only>
+<tabset >
+	<tab heading='Check In'>
+		<div ng-controller='CheckInController'>
+		<button  ng-hide='checkInSuccess'
+		ng-click='checkIn()' class='btn btn-success btn-block' tooltip="This will check you in for your next available event,
+		as long as it's within the next hour.">Check In</button>
+		<span ng-show='checkInSuccess'>{{ checkInMsg }}</span>
+		
+		</div>
+	</tab>
+	
+</tabset>
+</div>
+</div>
+</div>
+

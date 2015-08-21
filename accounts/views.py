@@ -10,7 +10,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from buddy.permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly
 
 from .serializers import UserSerializer, TempDataCreateSerializer
 from .models import TempData
@@ -53,7 +53,35 @@ class UserViewSet(viewsets.ModelViewSet):
             'message': 'account could not be created with this data',
             'error': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        print(self)
+        print(request.data)
+        print(args)
+        print(kwargs)
+        partial = kwargs.pop('partial', False)
+
+        instance = self.get_object()
+        print(instance)
+        user = User.objects.get(id=kwargs['pk'])
+
+            
+            
+        serializer = self.get_serializer(instance,
+                                         data=request.data, partial=partial)
+        print(serializer)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
     
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        print(request.data)
+        print(args)
+        print(kwargs)
+        return self.update(request, *args, **kwargs)
+
+
     #switch this to CreateAPIView at deployment - this is for testing.
 class TempDataCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TempDataCreateSerializer

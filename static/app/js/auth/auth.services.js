@@ -1,6 +1,6 @@
-(function(){
- 'use strict';
-
+(function () {
+  'use strict';
+  
   angular
     .module('buddy.auth.services')
     .factory('Auth', Auth);
@@ -8,29 +8,32 @@
     
   Auth.$inject = ['$http', '$window'];
   
-  function Auth($http, $window){
+  function Auth($http, $window) {
     
     var Auth = {
       deleteToken: deleteToken,
-      getToken: getToken,
+      getToken:getToken,
       login: login,
       logout: logout,
       register: register,
       setToken: setToken,
+      //delete this one if it fucks stuff up.
       isAuth: isAuth,
-      setTimezone: setTimezone
+      //delete this if it fucks things up.
+      setTimezone: setTimezone,
       
-      };
+    };
     
     return Auth;
-  
+    
     function isAuth(){
-      console.log('auth confirmed');
-      if(Auth.getToken()){
+
+      if (Auth.getToken()){
         return true;
       } else {
         return false;
       }
+      
     }
     
     function deleteToken(){
@@ -40,76 +43,95 @@
     }
     
     function getToken(){
-      $window.localStorage.getItem('token');
-      }
+      return $window.localStorage.getItem('token');
+    }
     
-    function login(login_email, login_password){
+    function login(login_email, login_password) {
       return $http.post('/api/auth/login/', {
         email: login_email,
-        password: login_password
-        }).then(loginSuccessFn, loginErrorFn);
+        password: login_password,
+        //call the success or error afterward
+      }).then(loginSuccessFn, loginErrorFn);
       
-      function loginSuccessFn(data, status, headers, config){
-        if(data.data.token){
+      // modify this and setToken to store the user
+      // id information inside of the window.
+      // the reason for this is to supply user profile information
+      // visually.
+      
+      function loginSuccessFn(data, status, headers, config) {
+        console.log(data.data.user_id);
+        if (data.data.token){
           Auth.setToken(data.data.token, data.data.user_id, data.data.username);
-          }
-          $window.location = '/';
-          return 'success'
-        };
-      
-      function loginErrorFn(data, status, headers, config){
-        console.error(data);
-        return 'failure'
-        
-        };
-      }
+          console.log('login success');
+          //console.log(data.data.token);
+          //console.log(data);
+        }
+        $window.location = '/';
+        return 'success'
+    }
+    
+    // we need to figure out a way to display the login error on the page.
+    function loginErrorFn(data, status, headers, config) {
+      console.error(data);
+      return 'failure'
+    }
+  }
+    //modify setToken and deleteToken to hold the user id
     function logout(){
       Auth.deleteToken();
+      //event.preventDefault();
+      console.log('logout successful');
       $window.location = '/';
     }
     
-    function register(register_email, register_password, confirm_password){
+    
+    function register(register_email, register_password, confirm_password) {
+      console.log('register service fired');
       return $http.post('/api/users/', {
         email: register_email,
-        password: register_password
-        }).then(registerSuccessFn, registerErrorFn);
+        password: register_password,
+        //confirm_password: confirm_password
+      }).then(registerSuccessFn, registerErrorFn);
     
       function registerSuccessFn(data, status, headers, config){
+
         Auth.login(register_email, register_password);
       }
-      
       function registerErrorFn(data, status, headers, config){
-        //stick some sort of message here, or in the controller.
         console.error(data);
       }
+    
     }
     
     function setToken(token, user_id, username){
       $window.localStorage.setItem('token', token);
       $window.localStorage.setItem('user_id', user_id);
-      $window.localStorage.setItem('username', username)
-      
+      $window.localStorage.setItem('username', username);
+      //for user id
+      //$window.localStorage.setItem('userId', 
     }
     
     function setTimezone(){
-      var tz = jstz.determine()
-      
-      var userId = $window.localStorage.getItem('user_id')
-      $http.patch('/api/users/'+ userId + '/', {
-        'time_zone' : tz.name()
-      }).success(function(data, status, headers, config){
-        console.log('tz set')
-      }).error(function(data, status, headers, config){
-        console.log(data)
-        console.log(status);
-        console.log(headers);
-        console.log(config);
-        });
-      
+        var tz = jstz.determine()
+
+
+        var userId = $window.localStorage.getItem('user_id')
+        $http.patch('/api/users/' + userId + '/',{
+            'time_zone': tz.name(),
+            }).success(function(data, status, headers, config){
+            console.log('service success')
+            console.log(data, status, headers, config)})
+        .error(function(resp, status, headers, config){
+            console.log('error at service')
+            console.log(resp)
+            console.log(status);
+            console.log(headers);
+            console.log(config.data)});
+        
+        
     }
-
     
-  }
-
- 
-})();
+    
+  
+  
+  }})();
