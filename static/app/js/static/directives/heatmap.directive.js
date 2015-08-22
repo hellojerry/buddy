@@ -1,14 +1,16 @@
-var heatMap = angular.module('buddy.static.directives')
+'use strict';
+var heatMap = angular.module('buddy.static.directives', [])
 
 heatMap.$inject = ['$window'];
 
 heatMap.directive('calHeatmap', function ($window, $http) {
   
-
+    console.log('heatmap directive')
     var userId = $window.localStorage.getItem('user_id');
     
     
     function link(scope, elem, $http) {
+
         var config = scope.config || {};
         var element = elem[0];
         var cal = new CalHeatMap();
@@ -19,7 +21,7 @@ heatMap.directive('calHeatmap', function ($window, $http) {
             domain: 'month',
             subDomain: 'day',
             subDomainTextFormat: '%d',
-            data: 'http://localhost:8000/api/users/records/' + userId + '/',
+            data: 'http://localhost:8000/api/records/' + userId + '/',
             start: new Date(2015,6,15),
             cellSize: 25,
             range: 3,
@@ -27,6 +29,11 @@ heatMap.directive('calHeatmap', function ($window, $http) {
             legendHorizontalPosition: 'center',
             //legendOrientation: 'vertical',
             //legendMargin: [0,0,0,30],
+            legendColors: {
+                min: '#FFCCCC',
+                max: '#FF4D4D',
+                empty: 'white',
+            },
             legendTitleFormat: {
               lower: 'No checkins',
               inner: '{down} {name}',
@@ -44,7 +51,7 @@ heatMap.directive('calHeatmap', function ($window, $http) {
         cal.init(defaults);
     }
     return {
-        template: '<div style="margin-top: -20%" class="cal-heatmap" ng-transclude config="config"></div>',
+        template: '<div class="cal-heatmap" ng-transclude config="config"></div>',
         transclude: true,
         restrict: 'E',
         link: link,

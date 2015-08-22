@@ -45,8 +45,3 @@ class APIHeatMapTest(TestCase):
         #we'll test that the values are aggregated properly.
         self.assertEqual(len(random.choice(list(result.keys()))), 10)
         self.assertEqual(len(result),3)
-        
-        
-        
-        
-        

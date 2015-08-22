@@ -21,9 +21,10 @@ User = get_user_model()
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    authentication_classes = [JSONWebTokenAuthentication,]
+    authentication_classes = [JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication]
     
     def get_permissions(self):
+        print('get permissions')
         if self.request.method in permissions.SAFE_METHODS:
             return (permissions.AllowAny(),)
         elif self.request.method == 'POST':
@@ -54,32 +55,6 @@ class UserViewSet(viewsets.ModelViewSet):
             'error': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, *args, **kwargs):
-        print(self)
-        print(request.data)
-        print(args)
-        print(kwargs)
-        partial = kwargs.pop('partial', False)
-
-        instance = self.get_object()
-        print(instance)
-        user = User.objects.get(id=kwargs['pk'])
-
-            
-            
-        serializer = self.get_serializer(instance,
-                                         data=request.data, partial=partial)
-        print(serializer)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
-    
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        print(request.data)
-        print(args)
-        print(kwargs)
-        return self.update(request, *args, **kwargs)
 
 
     #switch this to CreateAPIView at deployment - this is for testing.

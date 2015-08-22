@@ -18,6 +18,7 @@ from django.contrib import admin
 
 from accounts.views import UserViewSet, TempDataCreateAPIView
 from activities.views import ActivityViewSet, CheckInAPIView
+from analytics.views import UserStreakAPIView
 from .views import BaseView
 
 from rest_framework.routers import DefaultRouter
@@ -32,6 +33,7 @@ urlpatterns = [
     url(r'^rest-framework/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/users/checkin/(?P<pk>\d+)/$', CheckInAPIView.as_view(), name='checkin'),
     url(r'^api/users/(?P<pk>\d+)/createtemp/$', TempDataCreateAPIView.as_view(), name='create_temp'),
+    url(r'^api/users/streaks/(?P<pk>\d+)/$',UserStreakAPIView.as_view(), name='streaks'),
     url(r'confirm/(?P<conf>[\w-]+)/(?P<cat>[tep])/$', 'accounts.views.temp_data_verify', name='verify'),
     url(r'^api/records/(?P<pk>\d+)/$', 'analytics.views.record_api_view', name='records'),
     url(r'^api/calls/call_data/$', 'comms.views.call_response', name='call_response'),

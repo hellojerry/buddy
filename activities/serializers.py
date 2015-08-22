@@ -111,7 +111,8 @@ class CheckInSerializer(serializers.ModelSerializer):
             'name',
             'completed',
             'time',
-            'is_open'
+            'is_open',
+            'local_time'
         ]
         read_only_fields = ('id', 'user', 'name', 'time')
         

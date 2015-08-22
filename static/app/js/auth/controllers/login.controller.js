@@ -11,7 +11,7 @@
   //this is to give us access to the login function at the
   //template level.
   function LoginController(Auth) {
-    //console.log($rootScope)
+
     var vm = this;
     
     vm.login = login;
@@ -21,15 +21,13 @@
     //modify the user model so the username field is 'email'.
     function login() {
       Auth.login(vm.login_email, vm.login_password).then(
-        function(val, val2){
+        function(val){
           var item = val;
-          console.log(item);
-          console.log(val2)
+
           if (item === 'failure'){
             vm.loginError = true;
           } else {
-            //$rootScope.currentUserLoggedIn = true;
-            //console.log($rootScope)
+
             Auth.setTimezone();
           }
 

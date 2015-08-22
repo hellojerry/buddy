@@ -16,7 +16,7 @@ var buddy = angular.module('buddy', [
 buddy.config(function($locationProvider, $routeProvider, $httpProvider){
   //$httpProvider.interceptors.push('AuthInterceptor');
   $locationProvider.html5Mode(true).hashPrefix('!');
-  
+  $httpProvider.interceptors.push('AuthInterceptor');
    $routeProvider
         .when('/', {
             templateUrl: 'static/app/partials/home.html',
@@ -41,9 +41,7 @@ buddy.run(['$rootScope', '$location',
 
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
     $http.defaults.xsrfCookieName = 'csrftoken';
-    $http.defaults.headers.common.Authorization = 'JWT ' + localStorage.getItem('token');
     
-
     
     $rootScope.go = function (path, pageAnimationClass) {
 

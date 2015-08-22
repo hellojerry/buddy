@@ -12,7 +12,7 @@
 
 <h2 style='color: #0ac2d2 !important'>Accountabillibuddy!</h2>
 <p>Accountabillibuddy is your robotic accountabillibuddy! Click "Tour" on the left to see what it does!</p>
-<button class='btn btn-success' auth-hide>ABCDEFG</button>
+
 </div>
 
 
@@ -188,10 +188,19 @@
 <tabset >
 	<tab heading='Check In'>
 		<div ng-controller='CheckInController'>
+		<div class="panel panel-default">
+  <div class="panel-body">
+    <p ng-show='checkInAvailable()'>{{ name }} at {{ time }}</p>
+		<p ng-hide='checkInAvailable()'>There are no activities to check in right now.</p>
+  </div>
+  <div class="panel-footer" ng-show='checkInAvailable()'>
 		<button  ng-hide='checkInSuccess'
 		ng-click='checkIn()' class='btn btn-success btn-block' tooltip="This will check you in for your next available event,
 		as long as it's within the next hour.">Check In</button>
-		<span ng-show='checkInSuccess'>{{ checkInMsg }}</span>
+		<span ng-show='checkInSuccess'>{{ checkInMsg }}</span></div>
+</div>	
+			
+
 		
 		</div>
 	</tab>

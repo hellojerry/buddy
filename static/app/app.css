@@ -96,6 +96,7 @@ h2 {
 #settings
 {
     background-color: #fdc162;
+    color: #0ac2d2
 }
 #about
 {
@@ -411,4 +412,6 @@ h2 {
             transform: translate3d(0,-100%,0);
 }
 
-
+.cal-heatmap-container .graph-label {
+    fill: white !important;
+}

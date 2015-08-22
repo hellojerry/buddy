@@ -6,7 +6,6 @@
     .service('AuthInterceptor', AuthInterceptor);
     
   AuthInterceptor.$inject = ['$injector', '$location', '$q'];
-  
   function AuthInterceptor($injector, $location, $q) {
     var AuthInterceptor = {
       request: request,
@@ -18,7 +17,6 @@
     function request(config) {
       var Auth = $injector.get('Auth');
       var token = Auth.getToken();
-      
       if (token){
         config.headers['Authorization'] = 'JWT ' + token;
       }

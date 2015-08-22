@@ -238,13 +238,39 @@ planControllers.controller('ActivityTableController',
 planControllers.controller('CheckInController', function($scope, $http, $window){
     var userId = $window.localStorage.getItem('user_id');
     
-
-
     
+    $scope.checkInAvailable = function(){
+      if ($scope.name != null){
+        return true;
+      } else {
+        return false;
+      }
+    }
+    
+    $http.get('api/users/checkin/' + userId + '/').success(
+        function(data, request, headers, config){
+         
+          if(data.status === "Nothing available"){
+            console.log('status')
+          } else {
+              $scope.name = data.name
+              $scope.time = data.local_time.slice(11,16)
+              $scope.actId = data.id
+          }
+        }
+      ).error(function(data, request, headers, config){
+            console.log(data, request, headers, config)})
+    
+
+
+    //rewrite this to a post or patch request
     $scope.checkIn = function (){
-        return $http.get('api/users/checkin/' + userId +'/', {}).success(function(data){
-            console.log(data)
-            console.log(data.completed)
+        return $http.patch('api/users/checkin/' + userId +'/', {
+            'id': $scope.actId,
+            'completed': true,
+            'is_open': false,
+          
+          }).success(function(data){
             if (data.completed === false){
                 $scope.checkInMsg = "Looks like there's nothing to check in right now. Try again later!"
             } else {

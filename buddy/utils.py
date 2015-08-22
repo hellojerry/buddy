@@ -1,5 +1,6 @@
 from accounts.serializers import UserSerializer
-from django.contrib.auth import get_user_model
+#from django.contrib.auth import get_user_model
+
 
 def jwt_response_payload_handler(token, user=None, request=None):
     user_id = UserSerializer(user).data['id']
@@ -11,3 +12,4 @@ def jwt_response_payload_handler(token, user=None, request=None):
         'user_id': user_id,
         'username': username
     }
+  

@@ -30,7 +30,7 @@
 <script src="{% static 'app/bower_components/angular-animate/angular-animate.min.js' %}"></script>
 <script src="{% static 'app/bower_components/angular-resource/angular-resource.min.js' %}"></script>
 <script src="{% static 'app/bower_components/angular-xeditable/dist/js/xeditable.min.js' %}"></script>
-<script type='text/javascript' src="{% static 'app/bower_components/cal-heatmap/cal-heatmap.min.js' %}"></script>
+<script src="{% static 'app/bower_components/cal-heatmap/cal-heatmap.min.js' %}"></script>
 <script src="{% static 'app/bower_components/angular-bootstrap/ui-bootstrap.min.js' %}"></script>
 <script src="{% static 'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' %}"></script>
 
@@ -51,14 +51,26 @@
 
 <script src="{% static 'app/js/static/static.module.js' %}"></script>
 
-<script src="{% static 'app/js/static/directives/heatmap.directive.js' %}"></script>
+
 <script src="{% static 'app/js/static/directives/pwmatch.directive.js' %}"></script>
 <script src="{% static 'app/js/static/directives/numberonly.directive.js' %}"></script>
+<script src="{% static 'app/js/static/directives/heatmap.directive.js' %}"></script>
 <script src="{% static 'app/js/static/directives/tab.directive.js' %}"></script>
 <script src="{% static 'app/js/static/directives/tabset.directive.js' %}"></script>
 <script src="{% static 'app/js/static/directives/authhide.directive.js' %}"></script>
 <script src="{% static 'app/js/static/directives/authonly.directive.js' %}"></script>
 <script src="{% static 'app/js/static/homesize.controller.js' %}"></script>
+
+
+
+
+
+
+<!--stats -->
+<script src="{% static 'app/js/stats/stats.module.js' %}"></script>
+<script src="{% static 'app/js/stats/stats.controller.js' %}"></script>
+
+
 
 <!-- activities -->
 <script src="{% static 'app/js/plans/plans.module.js' %}"></script>
@@ -72,9 +84,7 @@
 <script src="{% static 'app/js/profiles/contact.controller.js' %}"></script>
 <script src="{% static 'app/js/profiles/info.controller.js' %}"></script>
 
-<!--stats -->
-<script src="{% static 'app/js/stats/stats.module.js' %}"></script>
-<script src="{% static 'app/js/stats/stats.controller.js' %}"></script>
+
 
 
 </head>
