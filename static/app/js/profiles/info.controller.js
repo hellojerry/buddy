@@ -19,7 +19,7 @@
         return $http.post('api/users/' + userId + '/createtemp/', {
             email: $scope.new_email,
             phone: $scope.new_phone,
-            twitter: $scope.new_twitter,
+            twitter_handle: $scope.new_twitter,
             user_id: userId}).success(function(data){
             console.log('success')
             $scope.formSuccess = true;

@@ -8,7 +8,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from buddy.permissions import IsOwnerOrReadOnly
 
 from rest_framework import generics, permissions
-
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 import time
 from datetime import datetime
 import pytz
@@ -19,7 +19,7 @@ from activities.models import Activity
 User = get_user_model()
 
 class UserStreakAPIView(generics.RetrieveAPIView):
-    authentication_classes = [JSONWebTokenAuthentication,]
+    authentication_classes = [JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = UserStreakSerializer
     queryset = User.objects.all()

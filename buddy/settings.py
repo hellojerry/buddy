@@ -89,12 +89,24 @@ WSGI_APPLICATION = 'buddy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+from buddy.keys import (POSTGRES_PW, POSTGRES_USER, POSTGRES_NAME,
+                        POSTGRES_HOST, POSTGRES_PORT)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': POSTGRES_NAME,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PW,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
+}}
 
 
 # Internationalization
@@ -179,15 +191,13 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-# CELERYBEAT_SCHEDULE = {
-#     ##execute this every 30 minutes
-#     'send-texts':{
-#        'task': 'comms.tasks.text_list',
-#        'schedule': crontab(minute='*/5'),
-#        },
-#         ###execute this at 9:15 daily
-#     #'tweet-list': {
-#     #    'task': 'comms.tasks.tweet_list',
-#     #    'schedule': crontab(minute=15, hour=9)
-#     #    },
-#     }
+#CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERYBEAT_SCHEDULE = {
+    # Executes every Monday morning at 7:30 A.M
+    'call-list': {
+        'task': 'comms.tasks.call_list',
+        'schedule': crontab(hour='*/1', minute='0,30'),
+
+    },
+}

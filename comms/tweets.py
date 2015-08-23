@@ -1,7 +1,8 @@
 import tweepy
 from buddy.keys import (TWITTER_CONS_KEY,
                         TWITTER_SECRET, TWITTER_TOKEN_KEY,
-                        TWITTER_TOKEN_SECRET, SITE_URL)
+                        TWITTER_TOKEN_SECRET, SITE_URL, TWITTER_SCREEN_NAME)
+
 
 CONSUMER_KEY = TWITTER_CONS_KEY
 CONSUMER_SECRET = TWITTER_SECRET
@@ -43,10 +44,9 @@ def conf_tweet(recipient, conf):
     auth.secure = True
     auth.set_access_token(ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
-    ##add in a clause here to prevent the rest of API call if
-    #the name isnt in the follower list.
-    
-    
-    result = api.send_direct_message(screen_name=recipient, text=message)
-    return result
-
+    recipient_id = api.get_user(screen_name='recipient').id
+    if recipient_id in tweepy.Cursor(api.followers, screen_name=TWITTER_SCREEN_NAME).items():
+        result = api.send_direct_message(screen_name=recipient, text=message)
+        return result
+    else:
+        print('follower not found')

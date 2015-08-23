@@ -88,6 +88,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         current_streak = []
         activities = self.activity_set.all().filter(
             is_open=False).order_by('-time')
+        try:
+            activities[0]
+        except:
+            return 0
         counter = 0
         now = datetime.now(timezone.utc)
 
@@ -121,6 +125,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         peak_streak = 0
         sublist = []
         activities = self.activity_set.all().filter(is_open=False).order_by('time')
+        try:
+            activities[0]
+        except:
+            return 0
+        
         counter = 0
         for i in activities:
             

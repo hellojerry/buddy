@@ -22,11 +22,12 @@ def make_text(phone, message):
     
 @shared_task
 def call_list():
-    now = datetime.datetime.now(pytz.UTC)
+    now = datetime.now(pytz.UTC)
     back_bound = now - timedelta(minutes=10)
     front_bound = now + timedelta(minutes=10)
     flagged_activities = Activity.objects.filter(time__gte=back_bound).filter(
         time__lte=front_bound).filter(completed=False)
+    print(flagged_activities)
     for activity in flagged_activities:
         if activity.user.call != True or activity.user.phone == None:
             activity.is_open = False

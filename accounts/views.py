@@ -78,6 +78,7 @@ class TempDataCreateAPIView(generics.ListCreateAPIView):
         '''
         then let move to empty strings for conditional fields.
         '''
+        print('a')
         try:
             self.request.data['phone']
         except:
@@ -88,6 +89,7 @@ class TempDataCreateAPIView(generics.ListCreateAPIView):
             self.request.data['email'] = ''
         try:
             self.request.data['twitter_handle']
+            print(self.request.data['twitter_handle'])
         except:
             self.request.data['twitter_handle'] = ''
         return self.create(request, *args, **kwargs)
