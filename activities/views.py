@@ -28,6 +28,8 @@ class ActivityViewSet(viewsets.ModelViewSet):
         return Activity.objects.filter(
             user__id=user_id).filter(
             is_open=True).filter(completed=False)
+
+
     
 class CheckInAPIView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JSONWebTokenAuthentication,

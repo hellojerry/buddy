@@ -8,7 +8,6 @@ heatMap.directive('calHeatmap', function ($window, $http) {
     console.log('heatmap directive')
     var userId = $window.localStorage.getItem('user_id');
     
-    
     function link(scope, elem, $http) {
 
         var config = scope.config || {};
@@ -57,6 +56,34 @@ heatMap.directive('calHeatmap', function ($window, $http) {
         link: link,
         scope: {
             config: '='
+        }
+    };
+});
+heatMap.directive('nxEqualEx', function() {
+    console.log('ADSAFSAFSA')
+    return {
+        require: 'ngModel',
+        link: function (scope, elem, attrs, model) {
+            if (!attrs.nxEqualEx) {
+                console.error('nxEqualEx expects a model as an argument!');
+                return;
+            }
+            scope.$watch(attrs.nxEqualEx, function (value) {
+                // Only compare values if the second ctrl has a value.
+                if (model.$viewValue !== undefined && model.$viewValue !== '') {
+                    model.$setValidity('nxEqualEx', value === model.$viewValue);
+                }
+            });
+            model.$parsers.push(function (value) {
+                // Mute the nxEqual error if the second ctrl is empty.
+                if (value === undefined || value === '') {
+                    model.$setValidity('nxEqualEx', true);
+                    return value;
+                }
+                var isValid = value === scope.$eval(attrs.nxEqualEx);
+                model.$setValidity('nxEqualEx', isValid);
+                return isValid ? value : undefined;
+            });
         }
     };
 });

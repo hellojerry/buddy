@@ -61,13 +61,13 @@ buddy.run(['$rootScope', '$location',
             $location.path(path);
         }
         //resize div if 
-        if($window.localStorage.getItem('orig') != null){
-          console.log($window.localStorage.getItem('orig'))
-          var string = $window.localStorage.getItem('orig')
-          var origHeight = parseInt(string)
-          var pageContain = document.getElementById('page-contain')
-          pageContain.style.height = origHeight + 'px'
-          }
+        //if($window.localStorage.getItem('orig') != null){
+        //  console.log($window.localStorage.getItem('orig'))
+        //  var string = $window.localStorage.getItem('orig')
+        //  var origHeight = parseInt(string)
+        //  var pageContain = document.getElementById('page-contain')
+        //  pageContain.style.height = origHeight + 'px'
+        //  }
         
 
         
