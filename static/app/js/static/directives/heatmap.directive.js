@@ -60,7 +60,7 @@ heatMap.directive('calHeatmap', function ($window, $http) {
     };
 });
 heatMap.directive('nxEqualEx', function() {
-    console.log('ADSAFSAFSA')
+    
     return {
         require: 'ngModel',
         link: function (scope, elem, attrs, model) {
