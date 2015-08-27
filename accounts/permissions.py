@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from pprint import pprint
+
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):

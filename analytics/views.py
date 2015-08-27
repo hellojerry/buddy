@@ -15,18 +15,19 @@ import pytz
 from django.contrib.auth import get_user_model
 from activities.models import Activity
 
-
 User = get_user_model()
 
+
 class UserStreakAPIView(generics.RetrieveAPIView):
-    authentication_classes = [JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication,
+                              BasicAuthentication, SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = UserStreakSerializer
     queryset = User.objects.all()
-    
-    
+
+
 def record_api_view(request, pk):
-    
+
     user_id = pk
     local_tz = pytz.timezone(User.objects.get(id=user_id).time_zone)
     offset_amt = local_tz.utcoffset(datetime.now()).total_seconds()
@@ -46,6 +47,4 @@ def record_api_view(request, pk):
         except:
             l[b] = 1
 
-    
     return JsonResponse(l)
-        

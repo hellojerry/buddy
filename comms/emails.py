@@ -2,6 +2,7 @@ from django.core.mail import send_mail
 from accounts.models import TempData
 from django.template.loader import render_to_string
 
+
 def send_conf_email(temp_email, email_conf):
     from_email = 'mikesdjangosite@gmail.com'
     to_email = temp_email

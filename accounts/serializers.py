@@ -13,9 +13,10 @@ from django.core.mail import send_mail
 
 User = get_user_model()
 
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
-    
+
     class Meta:
         model = User
         fields = [
@@ -35,17 +36,17 @@ class UserSerializer(serializers.ModelSerializer):
             'email_me'
         ]
         read_only_fields = ('created_at', 'updated_at', 'is_admin',)
-        
+
     def create(self, validated_data):
         user = User(email=validated_data['email'])
         user.set_password(validated_data['password'])
         user.save()
         return user
-      
+
     def update(self, instance, validated_data):
 
         serializers.raise_errors_on_nested_writes('update', self, validated_data)
-        print(validated_data)
+
         # Simply set each attribute on the instance, and then save it.
         # Note that unlike `.create()` we don't need to treat many-to-many
         # relationships as being a special case. During updates we already
@@ -54,13 +55,14 @@ class UserSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
         return instance
-    
+
+
 class TempDataCreateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     phone = serializers.CharField(allow_blank=True, required=False)
     twitter_handle = serializers.CharField(allow_blank=True, required=False)
     email = serializers.EmailField(allow_blank=True, required=False)
-    
+
     class Meta:
         model = TempData
         fields = [
@@ -69,13 +71,13 @@ class TempDataCreateSerializer(serializers.ModelSerializer):
             'email',
             'twitter_handle'
         ]
-        
+
     def create(self, validated_data):
         temp = TempData(phone=validated_data['phone'],
                         user=validated_data['user'],
                         twitter_handle=validated_data['twitter_handle'],
                         email=validated_data['email']
-        )
+                        )
         temp.save()
         '''
         trigger confirmation email.
@@ -84,7 +86,7 @@ class TempDataCreateSerializer(serializers.ModelSerializer):
             from_email = 'mikesdjangosite@gmail.com'
             to_email = temp.email
             subject = 'Accountabillibuddy Email Address Change'
-            
+
             context = {
                 'email_conf': temp.email_conf
             }
@@ -93,19 +95,17 @@ class TempDataCreateSerializer(serializers.ModelSerializer):
 
             send_email.apply_async(eta=datetime.now(), kwargs={
                 'temp_email': temp.email,
-                'email_conf':temp.email_conf,
-
+                'email_conf': temp.email_conf,
             })
-        
+
         if temp.phone != '':
             message = '''
             ABB: Phone number changed.
             Click here to confirm:
             http://%s/confirm/%s/p/
             Please ignore if in error.
-            ''' %(SITE_URL, temp.phone_conf)
-            
-            ##IMPORT MAKE_TEXT FROM COMMS.TASKS
+            ''' % (SITE_URL, temp.phone_conf)
+
             make_text.apply_async(eta=datetime.now(), kwargs={
                 'phone': temp.phone,
                 'message': message
@@ -117,4 +117,3 @@ class TempDataCreateSerializer(serializers.ModelSerializer):
                 'conf': temp.twitter_conf,
                 })
         return temp
-            

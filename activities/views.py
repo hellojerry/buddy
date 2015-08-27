@@ -16,13 +16,13 @@ import pytz
 
 User = get_user_model()
 
+
 class ActivityViewSet(viewsets.ModelViewSet):
     authentication_classes = [JSONWebTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
-    
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly] # ]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = ActivitySerializer
-    
+
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return Activity.objects.filter(
@@ -30,7 +30,6 @@ class ActivityViewSet(viewsets.ModelViewSet):
             is_open=True).filter(completed=False)
 
 
-    
 class CheckInAPIView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JSONWebTokenAuthentication,
                               SessionAuthentication, BasicAuthentication]
@@ -46,20 +45,16 @@ class CheckInAPIView(generics.RetrieveUpdateAPIView):
             is_open=True).filter(completed=False).filter(
             time__gte=back_bound).filter(
             time__lte=front_bound).first()
-        #this is where we rewrite it.
+
         if obj is not None:
             return obj
 
-        
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance == None:
+        if instance is None:
             return Response({
                 'status': 'Nothing available',
                 'message': 'There are no checkins at this time. Try later!'
                 })
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-    
-
-

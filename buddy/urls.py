@@ -26,6 +26,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(router.urls)),
     url(r'^.*$', BaseView.as_view()), 
-    
-    
+
 ]

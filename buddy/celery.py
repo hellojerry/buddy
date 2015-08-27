@@ -6,6 +6,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'buddy.settings')
 
 app = Celery('buddy')
 
-
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

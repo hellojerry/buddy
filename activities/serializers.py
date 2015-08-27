@@ -10,6 +10,7 @@ from .models import Activity
 
 User = get_user_model()
 
+
 def next_weekday(day, weekday):
     days_ahead = weekday - day.weekday()
     if days_ahead <= 0:
@@ -32,9 +33,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     provided_time = serializers.CharField(max_length=20)
     day_of_week = serializers.CharField(max_length=10)
     editable = serializers.BooleanField(read_only=True)
-    
+
     class Meta:
-        model  = Activity
+        model = Activity
         fields = [
             'id',
             'user',
@@ -45,15 +46,15 @@ class ActivitySerializer(serializers.ModelSerializer):
             'day_of_week',
             'editable'
         ]
-        
-        read_only_fields = ('time','id', 'user', 'editable',)
-        
+
+        read_only_fields = ('time', 'id', 'user', 'editable',)
+
     def create(self, validated_data):
         user = validated_data['user']
         name = validated_data['name']
         provided_time = validated_data['provided_time']
         weekday = validated_data['day_of_week']
-        
+
         # lookup the next available day and assign that weekday to it.
         day = available[weekday]
         today = datetime.datetime.now(pytz.UTC)
@@ -63,18 +64,18 @@ class ActivitySerializer(serializers.ModelSerializer):
         minute = schedule_time.minute
         final_time = schedule_date.replace(hour=hour, minute=minute,
                                            second=0, microsecond=0)
-        #the next available date and time are in UTC, so we need to
-        #factor in the user's offset and save it at the proper time.
+        # the next available date and time are in UTC, so we need to
+        # factor in the user's offset and save it at the proper time.
         local_tz = pytz.timezone(user.time_zone)
         offset_amt = local_tz.utcoffset(datetime.datetime.now())
         final_time -= offset_amt
-        
-        
+
         return Activity.objects.create(user=user, name=name,
                                        time=final_time, is_open=True)
-    
+
     def update(self, instance, validated_data):
-        serializers.raise_errors_on_nested_writes('update', self, validated_data)
+        serializers.raise_errors_on_nested_writes('update',
+                                                  self, validated_data)
         provided_time = validated_data['provided_time']
         weekday = validated_data['day_of_week']
         try:
@@ -88,7 +89,7 @@ class ActivitySerializer(serializers.ModelSerializer):
         minute = schedule_time.minute
         final_time = schedule_date.replace(hour=hour, minute=minute,
                                            second=0, microsecond=0)
-        
+
         local_tz = pytz.timezone(validated_data['user'].time_zone)
         offset_amt = local_tz.utcoffset(datetime.datetime.now())
         final_time -= offset_amt
@@ -98,11 +99,13 @@ class ActivitySerializer(serializers.ModelSerializer):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
-        
+
         return instance
-    
+
+
 class CheckInSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
     class Meta:
         model = Activity
         fields = [
@@ -115,10 +118,3 @@ class CheckInSerializer(serializers.ModelSerializer):
             'local_time'
         ]
         read_only_fields = ('id', 'user', 'name', 'time')
-        
-        
-        
-        
-        
-        
-        
