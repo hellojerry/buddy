@@ -12,7 +12,9 @@
         <table class='table'>
           <thead>
             <tr>
-            <th>Text</th><th>Call</th><th>Email</th><th>Twitter</th></tr>
+            <th><span tooltip='Receive a text message reminder half an hour in advance'>Text</span></th>
+            <th><span tooltip='Receive a phone call if you miss your checkin'>Call</span></th>
+            <th><span tooltip='Get a reminder email an hour in advance'>Email</span></th><th>Twitter</th></tr>
           </thead>
           <tr>
             <td> {{ text_binary }} </td>
@@ -39,7 +41,7 @@
                 
             <div class='form-group'>
               <td>
-              <label for='text_binary'>Text Me?</label>
+              <label for='text_binary' >Text Me?</label>
               </td>
               <td>
               <input type='radio' value='yes' name='text_binary' ng-click='updateText()' ng-model='text_binary'>Yes

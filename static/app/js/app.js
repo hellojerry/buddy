@@ -10,7 +10,7 @@ var buddy = angular.module('buddy', [
   'buddy.stats',
   
   'buddy.profiles',
-    //'ui.bootstrap',
+   'ui.bootstrap',
 ]);
 
 buddy.config(function($locationProvider, $routeProvider, $httpProvider){
