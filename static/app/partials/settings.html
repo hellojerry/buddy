@@ -1,48 +1,166 @@
 <div id='settings' class='pages'>
-    <br>
-<div class='col-sm-2'></div>
-<div class='col-sm-8'>
+    
+
+<div class='container'>
+<div class='row'>
+
 <tabset>
-    <tab heading='Phone Settings'>
-        <div class='panel-body'>
-            <div class='row'>
-                <label>
-                <input type='checkbox'>Call Me
-                </label>
+  <tab heading='contact settings'>
+  <div class='panel-body' ng-controller='ContactController'>
+    <div class='row'>
+      <div class='table-responsive'>
+        <table class='table'>
+          <thead>
+            <tr>
+            <th>Text</th><th>Call</th><th>Email</th><th>Twitter</th></tr>
+          </thead>
+          <tr>
+            <td> {{ text_binary }} </td>
+            <td> {{ call_binary }} </td><td> {{ email_binary }} </td>
+            <td> {{ twitter_binary }} </td>
+          </tr>
+          <tr><td></td><td></td><td></td><td></td></tr>
+        </table>
+      </div>
+        <button type='submit' class='btn btn-primary pull-right' ng-hide='showForm' ng-click='showForm = true'>Edit</button>
+      <button type='submit' class='btn btn-primary pull-right' ng-show='showForm' ng-click='showForm = false'>Cancel</button>  
+    </div>
+    <div class='row' ng-show='showForm'>
+      <div class='col-sm-4'>&nbsp;
+        </div>
+      <div class='col-sm-4'>
+      
+          <form name='contact_settings_form'
+            novalidate ng-submit='contact_settings_form.$valid && CONTACT_SETTINGS_CONTROLLER.UPDATE()'>
+
+          
+            <table class='table'>
+              <tr>
                 
+            <div class='form-group'>
+              <td>
+              <label for='text_binary'>Text Me?</label>
+              </td>
+              <td>
+              <input type='radio' value='yes' name='text_binary' ng-click='updateText()' ng-model='text_binary'>Yes
+              <input type='radio' value='no' name='text_binary' ng-click='updateText()' ng-model='text_binary'>No
+              </td>
+            </div>
+            </tr>
+              <tr>
+            <div class='form-group'>
+             
+              <td>
+              <label for='call_binary'>Call Me?</label>
+              </td>
+              
+              <td>
+              <input type='radio' value='yes' name='call_binary' ng-click='updateCall()' ng-model='call_binary'>Yes
+              <input type='radio' value='no' name='call_binary' ng-click='updateCall()' ng-model='call_binary'>No
+              </td>
             </div>
             
+             </tr>
+              <tr>
+            <div class='form-group'>
+              <td>
+              <label for='email_binary'>Email Me?</label>
+              </td>
+              <td>
+              <input type='radio' value='yes' name='email_binary' ng-click='updateEmail()' ng-model='email_binary'>Yes
+              <input type='radio' value='no' name='email_binary' ng-click='updateEmail()' ng-model='email_binary'>No
+              </td>
+            </div>
+            </tr>
+              <tr>
+            <div class='form-group'>
+              <td>
+              <label for='twitter_binary'>Tweet Me?</label>
+              </td>
+              <td>
+              <input type='radio' value='yes' name='twitter_binary' ng-click='updateTweet()' ng-model='twitter_binary'>Yes
+              <input type='radio' value='no' name='twitter_binary' ng-click='updateTweet()' ng-model='twitter_binary'>No
+              </td>
+              
+            </div>
+            </tr>
+            <tr><td></td><td></tr>
+            </table>
             
+          </form>
+      </div>
+      <div class='col-sm-4'>&nbsp;</div>
+    </div>
+       </div>
+
+  </tab>
+  <tab heading='My information'>
+    <div class='panel-body' ng-controller='InfoController as Ctrl'>
+      <div class='row'>
+        <div class='table-responsive'>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>Phone Number</th><th>Twitter Handle</th>
+                <th>Email Address</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ phone }}</td><td>{{ twitter }}</td><td>{{ email }}</td>
+              </tr>
+              <tr>
+                <td>{{ new_phone }}</td><td>{{ new_twitter }}</td><td>{{ new_email }}</td>
+                
+              </tr>
+            </tbody>
+          </table>
         </div>
-        
-        
-        
-    </tab>
-    <tab heading='Twitter Settings'>
-        <div class='panel-body'>
+        <button type='submit' ng-hide='showForm' ng-click='showForm = true' class='btn btn-primary pull-right'>Edit</button>
+        <button type='submit' ng-show='showForm' ng-click='showForm = false' class='btn btn-primary pull-right'>Cancel</button>
+      </div>
+      <!-- set an ng-show here -->
+      
+      <div class='row' ng-show='showForm'>
+        <div class='col-sm-4'>&nbsp;</div>
+        <div class='col-sm-4'>
+          <form name='contact_info_form' ng-controller='InfoController'
+            novalidate ng-submit='contact_info_form.$valid && newTemp()'>
+          <div class='form-group'>
+            <label for='new_phone'>New Phone Number</label>
+            <input ng-model='new_phone' id='new_phone' name='new_phone'
+                   type='text' class='form-control' number-only ng-pattern="/^$|^[0-9X]{10}$/"/>
+          </div>
+          <div class='form-group'>
+            <label for='new_email'>New Email Address</label>
+            <input ng-model='new_email' id='new_email' name='new_email'
+                   type='email' class='form-control'/>
+          </div>
+          <div class='form-group'>
+            <label for='new_twitter'>New Twitter Handle</label>
+            <input ng-model='new_twitter' id='new_twitter' name='new_twitter'
+                   type='text' class='form-control' ng-pattern='/^[a-zA-Z0-9_]{1,15}$/'/>
+            <span class='error' ng-show='contact_info_form.new_twitter.$dirty'>Before activating on twitter, you'll need to follow
+            me! My tag is @ABB_SHAMEBOT.</span>
+          </div>
+            <button type='submit' ng-hide='contact_info_form.$pristine || formSuccess' class='btn btn-primary'>Submit</button>
+            <span class='error' ng-show='contact_info_form.new_phone.$error.pattern'>Ten digits please! 
+            </span>
+            <span class='error' ng-show='contact_info_form.new_email.$error.email'>That's not a valid email!</span>
+            <span class='error' ng-show='contact_info_form.new_twitter.$error.pattern'>That's not a valid twitter handle!</span>
             
-            
-            
+            <span class='error' ng-show='showError'>You've already requested a change. Confirm it!</span>
+            <span class='error' ng-show='formSuccess'>Check your email, phone or twitter for a confirmation number.
+            Your account information won't update until it's confirmed. You have 30 minutes!</span>
+          </form>
+          
         </div>
-        
-        
-        
-        
-    </tab>
-    <tab heading='Email Settings'>
-        <div class='panel-body'>
-            
-            
-            
-        </div>
-        
-        
-        
-    </tab>
-    
-    
-    
-</tabset>
+        <div class='col-sm-4'></div>  
+        </div></div>
+    </div>
+  </tab>
+    </tabset>
 </div>
-<div class='col-sm-2'></div>
+</div>
+
+    
 </div>
