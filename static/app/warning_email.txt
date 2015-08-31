@@ -1,0 +1,17 @@
+Hi!
+
+This email is to inform you that you have an activity due in
+
+about an hour! If this email is in error,
+
+please ignore this message.
+
+The activity is {{ name }}!
+
+Get it done!
+
+
+
+Sincerely,
+
+Your Accountabillibuddy

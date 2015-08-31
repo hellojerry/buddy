@@ -194,10 +194,22 @@ CELERY_RESULT_SERIALIZER = 'json'
 #CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 CELERYBEAT_SCHEDULE = {
-    # Executes every Monday morning at 7:30 A.M
+    # The following three execute once every half hour.
     'call-list': {
         'task': 'comms.tasks.call_list',
         'schedule': crontab(hour='*/1', minute='0,30'),
-
     },
+    'text-warnings': {
+      'task': 'comms.tasks.text_warnings',
+      'schedule': crontab(hour='*/1', minute='0,30'),
+    },
+    'email-warnings': {
+      'task': 'comms.tasks.email_warnings',
+      'schedule': crontab(hour='*/1', minute='0,30'),
+    },
+    # # executes once every monday at 10:30 UTC
+    # 'tweet-winners': {
+    #   'task': 'comms.tasks.tweet_winners',
+    #   'schedule': crontab(hour=10, minute=30, day_of_week=1),
+    # }
 }

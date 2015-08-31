@@ -5,7 +5,7 @@
     .module('buddy.auth.interceptors')
     .service('AuthResponseInterceptor', AuthResponseInterceptor)
 
-    AuthResponseInterceptor.$inject = ['$injector', '$q', '$location', '$window$']
+    AuthResponseInterceptor.$inject = ['$injector', '$q', '$location', '$window']
     function AuthResponseInterceptor($injector, $q, $location, $window){
 
       var AuthResponseInterceptor = {
