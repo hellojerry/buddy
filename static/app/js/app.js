@@ -17,6 +17,7 @@ buddy.config(function($locationProvider, $routeProvider, $httpProvider){
   //$httpProvider.interceptors.push('AuthInterceptor');
   $locationProvider.html5Mode(true).hashPrefix('!');
   $httpProvider.interceptors.push('AuthInterceptor');
+  $httpProvider.interceptors.push('AuthResponseInterceptor')
    $routeProvider
         .when('/', {
             templateUrl: 'static/app/partials/home.html',
