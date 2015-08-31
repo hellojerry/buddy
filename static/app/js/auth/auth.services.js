@@ -17,9 +17,7 @@
       logout: logout,
       register: register,
       setToken: setToken,
-      //delete this one if it fucks stuff up.
       isAuth: isAuth,
-      //delete this if it fucks things up.
       setTimezone: setTimezone,
       
     };
@@ -63,8 +61,7 @@
         if (data.data.token){
           Auth.setToken(data.data.token, data.data.user_id, data.data.username);
           console.log('login success');
-          //console.log(data.data.token);
-          //console.log(data);
+          Auth.setTimezone();
         }
         $window.location = '/';
         return 'success'
