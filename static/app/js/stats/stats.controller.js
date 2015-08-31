@@ -4,9 +4,9 @@ statsControllers.controller('StatsController', function($scope, $http, $window){
     var userId = $window.localStorage.getItem('user_id');
     $http.get('/api/users/streaks/' + userId + '/').success(function(data, status, headers, config){
         if (data.current_streak == 1){
-            $scope.current_streak = data.longest_streak + ' Day';
+            $scope.current_streak = data.current_streak + ' Day';
         } else {
-            $scope.current_streak = data.longest_streak + ' Days';
+            $scope.current_streak = data.current_streak + ' Days';
         }
         if (data.longest_streak == 1){
             $scope.longest_streak = data.longest_streak + ' Day';

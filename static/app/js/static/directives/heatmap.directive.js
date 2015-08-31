@@ -1,6 +1,6 @@
 'use strict';
 var heatMap = angular.module('buddy.static.directives', [])
-
+//var d3 = typeof require === "function" ? require("d3") : window.d3;
 heatMap.$inject = ['$window'];
 
 heatMap.directive('calHeatmap', function ($window, $http) {
@@ -38,9 +38,12 @@ heatMap.directive('calHeatmap', function ($window, $http) {
               inner: '{down} {name}',
               upper: 'more than {max} {name}'
             },
+            legendTextSide: "left",
+            legend_text: "less",
             domainGutter: 10,
             legend: [1, 2, 3, 4, 5],
-            itemName: 'checkin'
+            itemName: 'checkin',
+            colLimit: 5
         };
 
         console.log(defaults.data)
@@ -48,6 +51,7 @@ heatMap.directive('calHeatmap', function ($window, $http) {
         console.log(tz.name());
         angular.extend(defaults, config);
         cal.init(defaults);
+
     }
     return {
         template: '<div class="cal-heatmap" ng-transclude config="config"></div>',

@@ -14,53 +14,37 @@
 <div class='col-sm-5'>
 
 <p>
-<button style='margin-left: 35%' class='btn btn-default' id='previousSelector'>Previous</button>
+<button style='margin-left: 30%' class='btn btn-default' id='previousSelector'>Previous</button>
 		<button class='btn btn-default' id='nextSelector'>Next</button>
 </p>    
     
 <cal-heatmap>		</cal-heatmap>
 
 
+<h3 style='margin-left: 40%'>Checkins</h3>
 
+<div ng-controller='StatsController' style='margin-top: 5%'>
 
-<div>
-    <table style='margin-top:5%' ng-controller='StatsController'>
-        <tr>
-            <th style='width: 30%'>Current Streak</th>
-            <th style='width: 30%'>Longest Streak</th>
-            <th style='width: 35%; text-align: center'>Join Date</th>
-            <th style='width: 5%'>Points</th>
-        </tr>
+    <div class='row'>
+        <p class='pull-left' style='margin-left: 5%'>Current Streak</p>
+        <p class='pull-right'>{{ current_streak }}</p>
         
-        <tr>
-            <td style='text-align: center'>
-                <p>{{ current_streak }}</p>
-            
-            </td>
-            <td style='text-align: center'>
-                <p>{{ longest_streak }}</p>
-            
-            </td>
-            <td style='text-align: center'>
-                <p>{{ join_date }}</p>
-            
-            </td>
-            <td style='text-align: center'>
-                <p>{{ points }}</p>
-            
-            </td>
+    </div>
+    <div class='row'>
+        <p class='pull-left' style='margin-left: 5%'>Longest Streak</p>
+        <p class='pull-right'>{{ longest_streak }}</p>
         
+    </div>
+    <div class='row'>
+        <p class='pull-left' style='margin-left: 5%'>Join Date</p>
+        <p class='pull-right'>{{ join_date }}</p>
         
+    </div>
+    <div class='row'>
+        <p class='pull-left' style='margin-left: 5%'>Points</p>
+        <p class='pull-right'>{{ points }}</p>
         
-        </tr>
-
-        
-        
-        
-        
-    </table>
-    
-
+    </div>
 </div>
 
 

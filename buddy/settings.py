@@ -89,24 +89,24 @@ WSGI_APPLICATION = 'buddy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-from buddy.keys import (POSTGRES_PW, POSTGRES_USER, POSTGRES_NAME,
-                        POSTGRES_HOST, POSTGRES_PORT)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': POSTGRES_NAME,
-        'USER': POSTGRES_USER,
-        'PASSWORD': POSTGRES_PW,
-        'HOST': POSTGRES_HOST,
-        'PORT': POSTGRES_PORT,
-}}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+# from buddy.keys import (POSTGRES_PW, POSTGRES_USER, POSTGRES_NAME,
+#                         POSTGRES_HOST, POSTGRES_PORT)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': POSTGRES_NAME,
+#         'USER': POSTGRES_USER,
+#         'PASSWORD': POSTGRES_PW,
+#         'HOST': POSTGRES_HOST,
+#         'PORT': POSTGRES_PORT,
+# }}
 
 
 # Internationalization
