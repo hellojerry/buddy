@@ -1,75 +1,75 @@
 <div id='profile' class='pages'>
   
-  
-  
+<div class='row'>
+    <div class='col-sm-1'></div>
+    <div class='col-sm-6'>
+
+        <h3>
+            
+            <button type='button' class='btn btn-default-sm' id='previousSelector'>
+            <span class='glyphicon glyphicon-arrow-left'></span></button>
+            <button type='button' class='btn btn-default-sm' id='nextSelector'>
+            <span class='glyphicon glyphicon-arrow-right'></span></button>
+            &nbsp; &nbsp; &nbsp; Checkin History</h3>
+        
+    </div>
+    <div class='col-sm-5'>
+        <h3 class='pull-right' style='margin-right: 55%'>Stats</h3>
+        
+    </div>
+</div>
 
 
 <div class='row'>
-
-
-
-
-		
-<div class='col-sm-3'></div>
+<div class='col-sm-1'></div>
+<div class='col-sm-6'>
+   
+    <cal-heatmap></cal-heatmap>
+    
+    
+</div>
 <div class='col-sm-5'>
 
-<p>
-<button style='margin-left: 30%' class='btn btn-default' id='previousSelector'>Previous</button>
-		<button class='btn btn-default' id='nextSelector'>Next</button>
-</p>    
+<div ng-controller='StatsController'>
+
+    <div class='row'>
+        <p class='pull-left'>Current Streak</p>
+        <p class='pull-right' style='margin-right: 20%'>{{ current_streak }}</p>
+        
+    </div>
+    <div class='row'>
+        <p class='pull-left'>Longest Streak</p>
+        <p class='pull-right' style='margin-right: 20%'>{{ longest_streak }}</p>
+        
+    </div>
+    <div class='row'>
+        <p class='pull-left'>Join Date</p>
+        <p class='pull-right' style='margin-right: 20%'>{{ join_date }}</p>
+        
+    </div>
+    <div class='row'>
+        <p class='pull-left'>Points</p>
+        <p class='pull-right' style='margin-right: 20%'>{{ points }}</p>
+        
+    </div>
+</div>    
     
-<cal-heatmap>		</cal-heatmap>
-
-
-<h3 style='margin-left: 40%'>Checkins</h3>
-
-<div ng-controller='StatsController' style='margin-top: 5%'>
-
-    <div class='row'>
-        <p class='pull-left' style='margin-left: 5%'>Current Streak</p>
-        <p class='pull-right'>{{ current_streak }}</p>
-        
-    </div>
-    <div class='row'>
-        <p class='pull-left' style='margin-left: 5%'>Longest Streak</p>
-        <p class='pull-right'>{{ longest_streak }}</p>
-        
-    </div>
-    <div class='row'>
-        <p class='pull-left' style='margin-left: 5%'>Join Date</p>
-        <p class='pull-right'>{{ join_date }}</p>
-        
-    </div>
-    <div class='row'>
-        <p class='pull-left' style='margin-left: 5%'>Points</p>
-        <p class='pull-right'>{{ points }}</p>
-        
-    </div>
+    
 </div>
 
-
-</div>	
-<div class='col-sm-4'></div>
-	
+		
 
 </div>
-
-
-
-
-
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+<div class='row'>
+    <div class='col-sm-1'></div>
+    <div class='col-sm-4'>
+        <p style='margin-top: -6%; margin-left: 12%' class='pull-left'>Less</p>
+        <p style='margin-top: -6%' class='pull-right'>More</p>
+        
+        
+    </div>
+    <div class='col-sm-7'></div>
+    
+</div>
   
 </div>
