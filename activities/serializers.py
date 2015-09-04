@@ -49,6 +49,9 @@ class ActivitySerializer(serializers.ModelSerializer):
 
         read_only_fields = ('time', 'id', 'user', 'editable',)
 
+        # The create and update methods convert between
+        # server time and user timezones.
+
     def create(self, validated_data):
         user = validated_data['user']
         name = validated_data['name']

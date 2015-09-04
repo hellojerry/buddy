@@ -28,7 +28,9 @@ def tweet_status(person, message):
 
 
 def conf_tweet(recipient, conf):
-
+    '''
+    Sends private message via twitter to verify account.
+    '''
     message = '''
     ABB: Twitter handle changed.
     Click here to confirm:

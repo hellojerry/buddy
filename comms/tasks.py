@@ -24,6 +24,9 @@ def make_text(phone, message):
 
 @shared_task
 def call_list():
+    '''
+    Makes calls to all non-checked-in users with an activity due.
+    '''
     now = datetime.now(pytz.UTC)
     back_bound = now - timedelta(minutes=10)
     front_bound = now + timedelta(minutes=10)
@@ -38,14 +41,14 @@ def call_list():
             activity.is_open = False
             call_user(activity.user.phone)
             activity.save()
-            
+
     print('call list complete')
-    
+
 @shared_task
 def text_warnings():
     '''
-    warnings are done 1 hour in advance.
-    
+    Text warnings are done 30 minutes in advance.
+
     '''
     now = datetime.now(pytz.UTC)
     back_bound = now + timedelta(minutes=20)
@@ -59,7 +62,7 @@ def text_warnings():
         else:
             phone = activity.user.phone
             message = '''
-            ABB: Item due in 1 hour!
+            ABB: Item due in 30 minutes!
             '''
             text_user(phone, message)
     print('text warnings sent')
@@ -99,8 +102,8 @@ def email_warnings():
 #             scores.append({'user':user.twitter_handle, 'points': user.points})
 #     ordered = sorted(scores, key=itemgetter('points'), reverse=True)
 #     for handle in ordered[0:14]:
-        
-        
+
+
 
 @shared_task
 def send_email(temp_email, email_conf):

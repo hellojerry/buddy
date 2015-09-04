@@ -36,6 +36,11 @@ class CheckInAPIView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = CheckInSerializer
 
+    '''
+    The purpose of this view is to grab
+    an activity with a checkin available -
+    i.e. if its within 1 hour of being due.
+    '''
     def get_object(self):
         user = User.objects.get(id=self.kwargs['pk'])
         now = datetime.datetime.now(pytz.UTC)

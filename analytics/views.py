@@ -27,7 +27,11 @@ class UserStreakAPIView(generics.RetrieveAPIView):
 
 
 def record_api_view(request, pk):
-
+    '''
+    This reformats a user's streak data into a format
+    that 1) the cal-heatmap JS module can read
+    2) takes into account user local time.
+    '''
     user_id = pk
     local_tz = pytz.timezone(User.objects.get(id=user_id).time_zone)
     offset_amt = local_tz.utcoffset(datetime.now()).total_seconds()
